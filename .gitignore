@@ -1,9 +1,11 @@
 .lein-failures
 .lein-repl-history
+.markdown-preview.html
 .stack-work
 README.md
-project.clj
 target
-test
 
 *~
+Cargo.lock
+
+/rust/*/.gitignore
