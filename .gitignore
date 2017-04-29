@@ -1,5 +1,6 @@
 .lein-failures
 .lein-repl-history
+.stack-work
 README.md
 project.clj
 target
