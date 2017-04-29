@@ -1,0 +1,8 @@
+.lein-failures
+.lein-repl-history
+README.md
+project.clj
+target
+test
+
+*~
