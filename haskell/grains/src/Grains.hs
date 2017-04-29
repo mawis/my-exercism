@@ -6,7 +6,7 @@ square n
   | otherwise = Nothing
 
 total :: Integer
-total = 2 ^ 64 - 1
+total = 2 ^ (64 :: Integer) - 1
 -- On any square we have 2 to the power of the field number (counting from 0)
 -- grains. Each of these numbers in binary is a digit 1 followed by the
 -- field number of zero digits.
