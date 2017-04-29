@@ -6,10 +6,11 @@ import Data.List
 decode :: String -> String
 decode encodedText
   | encodedText == "" = ""
-  | isNumber (head encodedText) = foldr decodePair "" . asPairs $ groupBy grpNumber encodedText
+  | isNumber (head encodedText) = foldr decodePair ""
+                                  . asPairs $ groupBy grpNumber encodedText
   | otherwise                   = decode $ '1' : encodedText
 
-asPairs :: [String] -> [(String, String)]
+asPairs :: [a] -> [(a, a)]
 asPairs [] = []
 asPairs (len : grp : xs) = (len, grp) : asPairs xs
 asPairs _ = error "Even nummer of elements expected."
