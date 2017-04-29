@@ -13,16 +13,16 @@ addStudent :: Student -> [Student] -> [Student]
 addStudent stud [] = [stud]
 addStudent stud (x:xs)
   | stud <= x = stud : x : xs
-  | otherwise = x : (addStudent stud xs)
+  | otherwise = x : addStudent stud xs
 
 empty :: School
 empty = School []
 
 grade :: Int -> School -> [String]
-grade gradeNum school = (filter (isGrade gradeNum) $ sorted school) >>= snd
-  where isGrade gradeNum (num, _) = gradeNum == num
+grade gradeNum school = filter isGrade (sorted school) >>= snd
+  where isGrade (num, _) = gradeNum == num
 
 sorted :: School -> [(Int, [String])]
-sorted (School school) = fmap gradeGroup $ groupBy isGradeGroup school
+sorted (School school) = gradeGroup <$> groupBy isGradeGroup school
   where isGradeGroup (a, _) (b, _) = a == b
         gradeGroup students = (fst $ head students, fmap snd students)
