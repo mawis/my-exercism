@@ -2,6 +2,7 @@ name: matrix
 
 dependencies:
   - base
+  - split
   - vector
 
 library:

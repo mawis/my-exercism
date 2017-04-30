@@ -12,36 +12,56 @@ module Matrix
     , transpose
     ) where
 
-import Data.Vector (Vector)
+import Control.Monad (join)
+import Data.List.Split (chunksOf, splitOn)
+import qualified Data.Vector as V (Vector,
+                                   empty,
+                                   fromList,
+                                   length,
+                                   map,
+                                   toList,
+                                   (!))
 
-data Matrix a = Dummy deriving (Eq, Show)
+data Matrix a = Matrix (V.Vector (V.Vector a)) deriving (Eq, Show)
 
 cols :: Matrix a -> Int
-cols matrix = error "You need to implement this function."
+cols matrix
+  | rows matrix == 0 = 0
+  | otherwise        = V.length $ row 0 matrix
 
-column :: Int -> Matrix a -> Vector a
-column x matrix = error "You need to implement this function."
+column :: Int -> Matrix a -> V.Vector a
+column x (Matrix m) = V.map (V.! x) m
 
-flatten :: Matrix a -> Vector a
-flatten matrix = error "You need to implement this function."
+flatten :: Matrix a -> V.Vector a
+flatten (Matrix m) = join m
 
 fromList :: [[a]] -> Matrix a
-fromList xss = error "You need to implement this function."
+fromList = Matrix . V.fromList . map V.fromList
 
 fromString :: Read a => String -> Matrix a
-fromString xs = error "You need to implement this function."
+fromString "" = Matrix V.empty
+fromString xs = fromList . map (chain reads) $ splitOn "\n" xs
 
 reshape :: (Int, Int) -> Matrix a -> Matrix a
-reshape dimensions matrix = error "You need to implement this function."
+reshape (_, cs)= fromList . chunksOf cs . V.toList . flatten
 
-row :: Int -> Matrix a -> Vector a
-row x matrix = error "You need to implement this function."
+row :: Int -> Matrix a -> V.Vector a
+row x (Matrix m) = (V.!) m x
 
 rows :: Matrix a -> Int
-rows matrix = error "You need to implement this function."
+rows (Matrix m) = V.length m
 
 shape :: Matrix a -> (Int, Int)
-shape matrix = error "You need to implement this function."
+shape matrix = (rows matrix, cols matrix)
 
 transpose :: Matrix a -> Matrix a
-transpose matrix = error "You need to implement this function."
+transpose matrix
+  | rows matrix == 0 = matrix
+  | otherwise        = Matrix . V.fromList
+                       . map (`column` matrix) $ [0..cols matrix -1]
+
+chain :: (s -> [(a, s)]) -> s -> [a]
+chain f s = case f s of
+              [] -> []
+              [(a, s')] -> a : chain f s'
+              xs -> map fst xs ++ chain f (last $ map snd xs)
