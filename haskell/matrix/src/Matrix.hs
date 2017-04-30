@@ -14,25 +14,20 @@ module Matrix
 
 import Control.Monad (join)
 import Data.List.Split (chunksOf, splitOn)
-import qualified Data.Vector as V (Vector,
-                                   empty,
-                                   fromList,
-                                   length,
-                                   map,
-                                   toList,
-                                   (!))
+import Data.Vector (Vector)
+import qualified Data.Vector as V
 
-data Matrix a = Matrix (V.Vector (V.Vector a)) deriving (Eq, Show)
+data Matrix a = Matrix (Vector (Vector a)) deriving (Eq, Show)
 
 cols :: Matrix a -> Int
 cols matrix
   | rows matrix == 0 = 0
   | otherwise        = V.length $ row 0 matrix
 
-column :: Int -> Matrix a -> V.Vector a
+column :: Int -> Matrix a -> Vector a
 column x (Matrix m) = V.map (V.! x) m
 
-flatten :: Matrix a -> V.Vector a
+flatten :: Matrix a -> Vector a
 flatten (Matrix m) = join m
 
 fromList :: [[a]] -> Matrix a
@@ -45,7 +40,7 @@ fromString xs = fromList . map (chain reads) $ splitOn "\n" xs
 reshape :: (Int, Int) -> Matrix a -> Matrix a
 reshape (_, cs)= fromList . chunksOf cs . V.toList . flatten
 
-row :: Int -> Matrix a -> V.Vector a
+row :: Int -> Matrix a -> Vector a
 row x (Matrix m) = (V.!) m x
 
 rows :: Matrix a -> Int
