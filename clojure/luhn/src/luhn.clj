@@ -8,15 +8,15 @@
       :otherwise (throw (Exception. "Invalid digit")))))
 
 (defn decode [number]
-  (mapcat digit number ))
+  (mapcat digit number))
 
 (defn sum-reducer [accu [is-odd digit]]
   (mod
    (+ accu
-      (if is-odd digit
-          (let [double (* digit 2)]
-            (if (> double 9) (- double 9)
-                double))))
+      (cond
+        is-odd digit
+        (>= digit 5) (- (* digit 2) 9)
+        :otherwise (* digit 2)))
    10))
 
 (defn valid? [number]
