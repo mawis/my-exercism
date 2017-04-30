@@ -36,6 +36,10 @@ fromList = Matrix . V.fromList . map V.fromList
 fromString :: Read a => String -> Matrix a
 fromString "" = Matrix V.empty
 fromString xs = fromList . map (chain reads) $ splitOn "\n" xs
+  where chain f s = case f s of
+                      [] -> []
+                      [(a, s')] -> a : chain f s'
+                      xs' -> map fst xs' ++ chain f (last $ map snd xs')
 
 reshape :: (Int, Int) -> Matrix a -> Matrix a
 reshape (_, cs)= fromList . chunksOf cs . V.toList . flatten
@@ -54,9 +58,3 @@ transpose matrix
   | rows matrix == 0 = matrix
   | otherwise        = Matrix . V.fromList
                        . map (`column` matrix) $ [0..cols matrix -1]
-
-chain :: (s -> [(a, s)]) -> s -> [a]
-chain f s = case f s of
-              [] -> []
-              [(a, s')] -> a : chain f s'
-              xs -> map fst xs ++ chain f (last $ map snd xs)
