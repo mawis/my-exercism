@@ -1,31 +1,24 @@
 (ns luhn)
 
 (defn digit [d]
-  (let [unicode (int d)]
-    (cond
-      (<= 0x30 unicode 0x39) [(- unicode 0x30)]
-      (= 0x20 unicode) []
-      :otherwise (throw (Exception. "Invalid digit")))))
+  (cond
+    (<= \0 d \9) [(Character/getNumericValue d)]
+    (= \space d) []
+    :otherwise (throw (Exception. "Invalid digit"))))
 
 (defn decode [number]
   (mapcat digit number))
 
-(defn sum-reducer [accu [is-odd digit]]
-  (mod
-   (+ accu
-      (cond
-        is-odd digit
-        (>= digit 5) (- (* digit 2) 9)
-        :otherwise (* digit 2)))
-   10))
+(defn sum-reducer [[if-even if-odd] digit]
+  [(mod (+ if-odd digit) 10)
+   (mod (+ if-even (- (* digit 2) (if (>= digit 5) 9 0))) 10)])
 
 (defn valid? [number]
   (try
-    (let [digits (decode number)
-          length (count digits)]
-      (if (< length 2) false
+    (let [digits (decode number)]
+      (if (< (count (take 2 digits)) 2) false
           (->> digits
-               (map vector (iterate not (odd? length)))
-               (reduce sum-reducer 0)
+               (reduce sum-reducer [0 0])
+               first
                zero?)))
     (catch Exception e false)))
