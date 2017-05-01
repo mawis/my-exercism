@@ -1,10 +1,6 @@
 module SumOfMultiples (sumOfMultiples) where
 
 sumOfMultiples :: [Integer] -> Integer -> Integer
-sumOfMultiples factors limit = sum $ filter (isMultiple factors) [1.. limit - 1]
-
-isMultiple :: [Integer] -> Integer -> Bool
-isMultiple fs n = any  (multipleOf n) fs
-
-multipleOf :: Integer -> Integer -> Bool
-multipleOf n f = n `mod` f == 0
+sumOfMultiples factors limit = sum $ filter isMultiple [1.. limit - 1]
+  where isMultiple n = any multipleOf factors
+          where multipleOf = (== 0) . (n `mod`)
