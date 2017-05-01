@@ -2,6 +2,7 @@ name: sieve
 
 dependencies:
   - base
+  - data-ordlist
 
 library:
   exposed-modules: Sieve
