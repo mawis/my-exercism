@@ -1,7 +1,8 @@
 module Sieve (primesUpTo) where
 
+import Data.List ((\\))
+
 primesUpTo :: Integer -> [Integer]
 primesUpTo n = reverse $ sieve [] [2..n]
   where sieve primes [] = primes
-        sieve primes (x:xs) = sieve (x:primes)
-                              (filter (not . (`elem` [x, 2 * x .. n])) xs)
+        sieve primes (p:ps) = sieve (p:primes) (ps \\ [2 * p, 3 * p .. n])
