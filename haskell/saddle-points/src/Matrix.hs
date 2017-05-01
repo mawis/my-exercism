@@ -8,9 +8,11 @@ saddlePoints matrix = filter testSaddlePoint (indices matrix)
                                     && all isLowest (column candidate)
           where isLowest = ((matrix ! candidate) <=)
                 isHighest = ((matrix ! candidate) >=)
-                column idx = map ((matrix !) . makeIndex) [0..rows]
+                column idx = map ((matrix !) . makeIndex) [minRow..maxRow]
                   where makeIndex r = (r, snd idx)
-                        rows = fst . snd $ bounds matrix
-                row idx = map ((matrix !) . makeIndex) [0..cols]
+                        minRow = fst . fst $ bounds matrix
+                        maxRow = fst . snd $ bounds matrix
+                row idx = map ((matrix !) . makeIndex) [minCol..maxCol]
                   where makeIndex c = (fst idx, c)
-                        cols = snd . snd $ bounds matrix
+                        minCol = snd . fst $ bounds matrix
+                        maxCol = snd . snd $ bounds matrix
