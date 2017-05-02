@@ -4,7 +4,7 @@
 #include <string>
 
 namespace bob {
-    std::string hey(std::string address);
+    std::string hey(std::string const address);
 }
 
 #endif // _HELLO_WORLD_H

@@ -21,7 +21,7 @@ namespace bob {
 	    == std::string::npos;
     }
 
-    std::string hey(std::string address) {
+    std::string hey(std::string const address) {
 	return isShout(address) ? "Whoa, chill out!"
 	    : isQuestion(address) ? "Sure."
 	    : isEmpty(address) ? "Fine. Be that way!"
