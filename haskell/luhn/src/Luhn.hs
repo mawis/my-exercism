@@ -7,8 +7,7 @@ addends = reverse . helper True
           | isOdd     = digit:helper False rest
           | digit < 5 = (digit * 2):helper True rest
           | otherwise = (digit * 2 - 9):helper True rest
-          where digit = n `mod` 10
-                rest  = n `div` 10
+          where (rest, digit) = n `divMod` 10
 
 checkDigit :: Integer -> Integer
 checkDigit = (`mod` 10)
