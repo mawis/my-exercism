@@ -5,6 +5,6 @@ export default class PhoneNumber {
 
   number() {
 	const match = this.phoneNumber.match(/^1?(\d{10})$/);
-	return match ? match[1] : null
+	return match && match[1]
   }
 }
