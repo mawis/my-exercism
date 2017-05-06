@@ -7,7 +7,6 @@ library:
   exposed-modules: Prime
   source-dirs: src
   dependencies:
-    - data-ordlist
   # - foo       # List here the packages you
   # - bar       # want to use in your solution.
 

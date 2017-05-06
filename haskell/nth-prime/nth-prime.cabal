@@ -12,11 +12,9 @@ library
       src
   build-depends:
       base
-    , data-ordlist
   exposed-modules:
       Prime
   other-modules:
-      Sieve
       Paths_nth_prime
   default-language: Haskell2010
 
