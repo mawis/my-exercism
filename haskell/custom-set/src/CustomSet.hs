@@ -14,7 +14,6 @@ module CustomSet
   , union
   ) where
 
-import Data.List (sort)
 import Prelude hiding (null)
 
 data CustomSet a = CustomSet [a] deriving (Eq, Show)
@@ -34,7 +33,11 @@ fromList = foldr insert empty
 insert :: (Ord a, Eq a) => a -> CustomSet a -> CustomSet a
 insert x (CustomSet set)
   | x `elem` set = CustomSet set
-  | otherwise    = CustomSet (sort (x:set))
+  | otherwise    = CustomSet (insert' set)
+    where insert' [] = [x]
+          insert' ys'@(y:ys)
+            | x < y = x:ys'
+            | otherwise = y:insert' ys
 
 intersection :: Eq a => CustomSet a -> CustomSet a -> CustomSet a
 intersection (CustomSet setA) (CustomSet setB) = CustomSet
