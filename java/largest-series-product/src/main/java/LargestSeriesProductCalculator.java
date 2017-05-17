@@ -1,5 +1,4 @@
 import com.google.common.collect.ImmutableList;
-import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -34,13 +33,12 @@ public class LargestSeriesProductCalculator {
 
 		return rangeClosed(0, digits.size() - seriesLength)
 			.mapToObj(i -> digits.subList(i, i + seriesLength))
-			.map(ImmutableList::stream)
 			.mapToLong(this::serieProduct)
 			.max().getAsLong();
 	}
 
-	private long serieProduct(final Stream<Integer> serie) {
-		return serie
+	private long serieProduct(final ImmutableList<Integer> serie) {
+		return serie.stream()
 			.mapToLong(Integer::longValue)
 			.reduce(1L, (a, b) -> a * b);
 	}
