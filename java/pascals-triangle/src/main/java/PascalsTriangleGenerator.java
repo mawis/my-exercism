@@ -1,43 +1,27 @@
-import com.google.common.collect.ImmutableList;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.IntStream.range;
-import static java.util.stream.Stream.*;
+import static java.util.stream.IntStream.*;
 
 public class PascalsTriangleGenerator {
-	public int[][] generateTriangle(final int row) {
-		return toIntArray2D(
-				triangle()
-				.limit(row)
-				.map(PascalsTriangleGenerator::toIntArray)
-				.collect(toImmutableList()));
+	public int[][] generateTriangle(final int rows) {
+		return triangle()
+			.limit(rows)
+			.toArray(r -> new int[r][]);
 	}
 
-	private static Stream<ImmutableList<Integer>> triangle() {
-		return iterate(ImmutableList.of(1), PascalsTriangleGenerator::next);
+	private static Stream<int[]> triangle() {
+		return Stream.iterate(new int[]{1}, PascalsTriangleGenerator::next);
 	}
 
-	private static ImmutableList<Integer> next(final ImmutableList<Integer> prev) {
+	private static int[] next(final int[] prev) {
 		return enclosed(
-				range(0, prev.size() - 1)
-				.mapToObj(i -> prev.get(i) + prev.get(i + 1)))
-			.collect(toImmutableList());
+				range(0, prev.length - 1)
+				.map(i -> prev[i] + prev[i + 1]))
+			.toArray();
 	}
 
-	private static Stream<Integer> enclosed(final Stream<Integer> stream) {
-		return concat(concat(Stream.of(1), stream), Stream.of(1));
-	}
-
-	private static int[] toIntArray(final ImmutableList<Integer> list) {
-		final int[] result = new int[list.size()];
-		range(0, list.size()).forEach(i -> result[i] = list.get(i));
-		return result;
-	}
-
-	private static int[][] toIntArray2D(final ImmutableList<int[]> list) {
-		final int[][] result = new int[list.size()][];
-		range(0, list.size()).forEach(i -> result[i] = list.get(i));
-		return result;
+	private static IntStream enclosed(final IntStream stream) {
+		return concat(concat(IntStream.of(1), stream), IntStream.of(1));
 	}
 }
