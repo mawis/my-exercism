@@ -2,7 +2,7 @@ module Robot (Robot, mkRobot, resetName, robotName) where
 
 import Control.Concurrent (MVar, newMVar, readMVar, swapMVar)
 import Control.Monad (mapM)
-import System.Random (newStdGen, randomRIO)
+import System.Random (randomRIO)
 
 type Robot = MVar String
 
