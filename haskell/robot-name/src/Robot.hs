@@ -1,26 +1,21 @@
 module Robot (Robot, mkRobot, resetName, robotName) where
 
 import Control.Concurrent (MVar, newMVar, readMVar, swapMVar)
-import System.Random (newStdGen, randomRs)
+import Control.Monad (mapM)
+import System.Random (newStdGen, randomRIO)
 
-newtype Robot = Robot (MVar String)
+type Robot = MVar String
 
 mkRobot :: IO Robot
-mkRobot = do
-  let name = genName >>= newMVar
-  Robot `fmap` name
+mkRobot = genName >>= newMVar
 
 resetName :: Robot -> IO ()
-resetName (Robot c) = do
-  _ <- genName >>= swapMVar c
-  return ()
+resetName r = genName >>= swapMVar r >> return ()
 
 robotName :: Robot -> IO String
-robotName (Robot c) = readMVar c
+robotName = readMVar
 
 genName :: IO String
-genName = do
-  g <- newStdGen
-  let letters = randomRs ('A', 'Z') g
-  let digits = randomRs('0', '9') g
-  return $ take 2 letters ++ take 3 digits
+genName = mapM randomRIO [letter, letter, digit, digit, digit]
+  where letter = ('A', 'Z')
+        digit = ('0', '9')
