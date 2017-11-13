@@ -6,8 +6,7 @@ pub fn collatz(n: u64) -> Result<u64, &'static str> {
     if n == 0 {
         Err("n must not be zero!")
     } else {
-        let numbers = unfold(n, next);
-        Ok(numbers.count() as u64)
+        Ok(unfold(n, next).count() as u64)
     }
 }
 
