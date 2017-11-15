@@ -14,10 +14,6 @@ pub fn encode(num: u64) -> String {
 fn encode_number(num: u64) -> String {
     (0..7)
         .map(|group| (NAMES[group], (num / 1000u64.pow(group as u32)) % 1000))
-        .filter(|&(name, val)| {
-            println!("{} => {}", name, val);
-            true
-            })
         .filter(|&(_, val)| val != 0)
         .map(|(name, val)|
              if String::new() == *name { digit_triple(val) }
@@ -36,12 +32,12 @@ fn digit_triple(g: u64) -> String {
 fn digit_pair(g: u64) -> String {
     match g {
         _ if g < 10 => unit(g),
-        _ if g == 10 => String::from("ten"),
-        _ if g == 11 => String::from("eleven"),
-        _ if g == 12 => String::from("twelve"),
-        _ if g == 13 => String::from("thirteen"),
-        _ if g == 14 => String::from("fourteen"),
-        _ if g == 15 => String::from("fifteen"),
+        10 => String::from("ten"),
+        11 => String::from("eleven"),
+        12 => String::from("twelve"),
+        13 => String::from("thirteen"),
+        14 => String::from("fourteen"),
+        15 => String::from("fifteen"),
         _ if g < 20 => unit(g - 10)+"teen",
         _ if g < 30 => regular_tenner("twenty", g % 10),
         _ if g < 40 => regular_tenner("thirty", g % 10),
@@ -62,15 +58,15 @@ fn regular_tenner(t: &str, u: u64) -> String {
 
 fn unit(digit: u64) -> String {
     match digit {
-        _ if digit == 1 => String::from("one"),
-        _ if digit == 2 => String::from("two"),
-        _ if digit == 3 => String::from("three"),
-        _ if digit == 4 => String::from("four"),
-        _ if digit == 5 => String::from("five"),
-        _ if digit == 6 => String::from("six"),
-        _ if digit == 7 => String::from("seven"),
-        _ if digit == 8 => String::from("eight"),
-        _ if digit == 9 => String::from("nine"),
+        1 => String::from("one"),
+        2 => String::from("two"),
+        3 => String::from("three"),
+        4 => String::from("four"),
+        5 => String::from("five"),
+        6 => String::from("six"),
+        7 => String::from("seven"),
+        8 => String::from("eight"),
+        9 => String::from("nine"),
         _ => String::new()
     }
 }
