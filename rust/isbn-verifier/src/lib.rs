@@ -15,14 +15,12 @@ fn valid_syntax(isbn: &String) -> bool {
 }
 
 fn valid_checksum(isbn: &String) -> bool {
-    let values = (*isbn).chars()
-        .map(|ch| digit_value(ch))
-        .collect::<Vec<u32>>();
-    (0..10)
-        .map(|n| values[n] as u64 * (10 - n as u64))
+    isbn.chars()
+        .zip(0..10)
+        .map(|(ch, pos)| digit_value(ch) * (10 - pos as u64))
         .sum::<u64>() % 11 == 0
 }
 
-fn digit_value(ch: char) -> u32 {
-    ch.to_digit(10).unwrap_or(10)
+fn digit_value(ch: char) -> u64 {
+    ch.to_digit(10).unwrap_or(10) as u64
 }
