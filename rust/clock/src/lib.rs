@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(Debug, PartialEq)]
 pub struct Clock {
     minutes_of_day: u32
@@ -12,13 +14,9 @@ impl Clock {
         Clock::of_minutes(self.minutes_of_day as i32 + m)
     }
 
-    pub fn of_minutes(m: i32) -> Clock {
+    fn of_minutes(m: i32) -> Clock {
         Clock { minutes_of_day:
                 (m % (24 * 60) + if m < 0 { 24 * 60 } else { 0 }) as u32 }
-    }
-
-    pub fn to_string(&self) -> String {
-        format!("{:02}:{:02}", self.hour(), self.minutes())
     }
 
     fn hour(&self) -> u32 {
@@ -27,5 +25,11 @@ impl Clock {
 
     fn minutes(&self) -> u32 {
         self.minutes_of_day % 60
+    }
+}
+
+impl fmt::Display for Clock {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:02}:{:02}", self.hour(), self.minutes())
     }
 }
