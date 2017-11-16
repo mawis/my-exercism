@@ -16,8 +16,8 @@ fn valid_syntax(isbn: &String) -> bool {
 
 fn valid_checksum(isbn: &String) -> bool {
     isbn.chars()
-        .zip(0..10)
-        .map(|(ch, pos)| digit_value(ch) * (10 - pos as u64))
+        .zip((1..11).rev())
+        .map(|(ch, weight)| digit_value(ch) * weight as u64)
         .sum::<u64>() % 11 == 0
 }
 
