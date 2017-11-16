@@ -12,12 +12,12 @@ impl PascalsTriangle {
     pub fn rows(&self) -> Vec<Vec<u32>> {
         let zero = 0;
         (0..self.row_count)
-            .fold(Vec::new() as Vec<Vec<u32>>,
+            .fold(Vec::new(),
                   |mut accu, _| {
                       let new_row = match accu.last() {
                       None => vec![1u32],
                       Some(last) => {
-                          (*last).iter().chain(once(&zero))
+                          last.iter().chain(once(&zero))
                               .zip(once(&zero).chain(last.iter()))
                               .map(|(a, b)| a + b)
                               .collect() }};
