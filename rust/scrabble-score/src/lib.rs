@@ -12,10 +12,7 @@ fn char_value(ch: char) -> usize {
     LETTER_SCORES.iter()
         .zip(1..11)
         .filter_map(|(chrs, score)|
-                    match chrs.chars().filter(|&chr| chr == ch).nth(0) {
-                        None => None,
-                        Some(_) => Some(score)
-                    })
+                    chrs.chars().filter(|&chr| chr == ch).nth(0).map(|_| score))
         .nth(0)
         .unwrap_or(0)
 }
