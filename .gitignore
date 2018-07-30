@@ -5,6 +5,7 @@
 .stack-work
 README.md
 target
+.solution.json
 
 *~
 Cargo.lock
