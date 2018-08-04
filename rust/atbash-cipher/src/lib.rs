@@ -1,8 +1,7 @@
 use std::char;
 
-/// "Encipher" with the Atbash cipher.
 pub fn encode(plain: &str) -> String {
-    decode(plain).chars()
+    atbash_transpose(plain)
         .enumerate()
         .flat_map(|(pos, ch)|
                   if pos > 0 && pos % 5 == 0 { vec![' ', ch] }
@@ -10,9 +9,13 @@ pub fn encode(plain: &str) -> String {
         .collect()
 }
 
-/// "Decipher" with the Atbash cipher.
 pub fn decode(cipher: &str) -> String {
-    cipher.chars()
+    atbash_transpose(cipher)
+        .collect()
+}
+
+fn atbash_transpose<'a>(text: &'a str) -> impl Iterator<Item = char> + 'a {
+    text.chars()
         .filter(|ch| ch.is_alphanumeric() && ch.is_ascii())
         .flat_map(char::to_lowercase)
         .flat_map(|ch|
@@ -21,5 +24,4 @@ pub fn decode(cipher: &str) -> String {
                   } else {
                       Some(ch)
                   })
-        .collect()
 }
