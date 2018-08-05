@@ -1,0 +1,6 @@
+[package]
+name = "bracket-push"
+version = "1.2.0"
+
+[dependencies]
+rpds = "0.5.0"
