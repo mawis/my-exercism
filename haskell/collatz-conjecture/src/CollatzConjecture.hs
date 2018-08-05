@@ -1,10 +1,17 @@
 module CollatzConjecture (collatz) where
 
+import Data.List (genericLength)
+
 collatz :: Integer -> Maybe Integer
-collatz = helper 0
-  where helper cnt n
-          | n < 1  = Nothing
-          | n == 1 = Just cnt
-          | even n = helper nextCnt (n `div` 2)
-          | otherwise = helper nextCnt (3 * n + 1)
-          where nextCnt = cnt + 1
+collatz n
+  | n < 1     = Nothing
+  | otherwise = Just . genericLength $ collatzBeforeFirstOne n
+
+collatzBeforeFirstOne :: Integer -> [Integer]
+collatzBeforeFirstOne = takeWhile (> 1) . collatzSeq
+
+collatzSeq :: Integer -> [Integer]
+collatzSeq n
+  | n < 1     = []
+  | even n    = n : collatzSeq (n `div` 2)
+  | otherwise = n : collatzSeq (3 * n + 1)
