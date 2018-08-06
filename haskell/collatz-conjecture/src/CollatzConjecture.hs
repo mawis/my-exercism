@@ -5,13 +5,12 @@ import Data.List (genericLength)
 collatz :: Integer -> Maybe Integer
 collatz n
   | n < 1     = Nothing
-  | otherwise = Just . genericLength $ collatzBeforeFirstOne n
+  | otherwise = Just
+                . genericLength
+                . takeWhile (> 1)
+                $ iterate collatzStep n
 
-collatzBeforeFirstOne :: Integer -> [Integer]
-collatzBeforeFirstOne = takeWhile (> 1) . collatzSeq
-
-collatzSeq :: Integer -> [Integer]
-collatzSeq n
-  | n < 1     = []
-  | even n    = n : collatzSeq (n `div` 2)
-  | otherwise = n : collatzSeq (3 * n + 1)
+collatzStep :: Integer -> Integer
+collatzStep n
+  | even n    = n `div` 2
+  | otherwise = 3 * n + 1
